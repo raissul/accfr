@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>User Access Request Form</title>
+  <style> 
+                      :root {
+                  --purple: #ffffff;
+                  --blue: #181341;
+                  --glow: 0 0 20px rgba(2, 5, 41, 0.6), 0 0 40px rgba(34, 29, 73, 0.6);
+                  --glass: rgba(236, 229, 229, 0.05);
+                  --input-bg: rgba(255, 255, 255, 0.1);
+                  --text-light: #f0f0f0;
+                  --bg-dark: #000;
+                  --bg-light: #f6f6f6;
+                  --text-dark: #111;
+                  --success-color: #4CAF50;
+                  --error-color: #ff3860;
+                }
+
+                body {
+                  background-color: var(--bg-dark);
+                  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                  padding: 30px;
+                  max-width: 960px;
+                  margin: auto;
+                  color: var(--text-light);
+                  transition: background 0.3s ease, color 0.3s ease;
+                }
+
+                body.light-mode {
+                  background-color: var(--bg-light);
+                  color: var(--text-dark);
+                }
+
+                h1, h2 {
+                  text-align: center;
+                  color: var(--text-light);
+                  text-shadow: 0 0 10px var(--purple);
+                }
+
+                body.light-mode h1, body.light-mode h2 {
+                  color: var(--text-dark);
+                  text-shadow: none;
+                }
+
+                h1 { font-size: 2.5rem; margin-bottom: 0.3em; }
+                h2 { font-size: 1.6rem; margin-bottom: 1.5em; }
+
+                .toggle-container {
+                  display: flex;
+                  justify-content: space-between;
+                  align-items: center;
+                  margin-bottom: 20px;
+                }
+
+                .toggle-container label {
+                  font-weight: bold;
+                  font-size: 0.9rem;
+                  cursor: pointer;
+                }
+
+                /* Fix for toggle container label in light mode */
+                body.light-mode .toggle-container label {
+                  color: var(--text-dark);
+                }
+
+                input[type="checkbox"] {
+                  margin-left: 10px;
+                  transform: scale(1.2);
+                  cursor: pointer;
+                }
+
+                form {
+                  display: flex;
+                  flex-direction: column;
+                  gap: 25px;
+                }
+
+                .section {
+                  background: var(--glass);
+                  border-radius: 16px;
+                  padding: 25px;
+                  backdrop-filter: blur(12px);
+                  -webkit-backdrop-filter: blur(12px);
+                  box-shadow: var(--glow);
+                  border: 1px solid rgba(255, 255, 255, 0.08);
+                  transition: transform 0.2s ease;
+                }
+
+                body.light-mode .section {
+                  background-color: rgba(255, 255, 255, 0.6);
+                  backdrop-filter: blur(12px);
+                  -webkit-backdrop-filter: blur(12px);
+                  box-shadow: 0 0 16px rgba(203, 42, 99, 0.2), 0 0 32px rgba(34, 29, 73, 0.1);
+                  border: 1px solid rgba(0, 0, 0, 0.1);
+                  color: var(--text-dark);
+                }
+
+                .section:hover { transform: scale(1.01); }
+
+                h3 {
+                  margin-bottom: 15px;
+                  color: var(--purple);
+                  font-size: 1.3rem;
+                }
+
+                /* Fix for section headings in light mode */
+                body.light-mode h3 {
+                  color: var(--text-dark);
+                }
+
+                .field {
+                  display: flex;
+                  flex-direction: column;
+                  margin-bottom: 15px;
+                  position: relative;
+                }
+
+                .field label {
+                  margin-bottom: 5px;
+                  font-weight: bold;
+                  color: var(--text-light);
+                  display: flex;
+                  align-items: center;
+                }
+
+                .required:after {
+                  content: "*";
+                  color: #cb2a63;
+                  margin-left: 4px;
+                }
+
+                /* Fixed styles for all label types in light mode */
+                body.light-mode .field label,
+                body.light-mode .checkbox-field label,
+                body.light-mode label.required,
+                body.light-mode .signature label {
+                  color: var(--text-dark);
+                }
+
+                .field input,
+                .field select,
+                .field textarea {
+                  padding: 12px;
+                  border-radius: 10px;
+                  border: 1px solid rgba(235, 225, 225, 0.15);
+                  background-color: var(--input-bg);
+                  font-size: 1rem;
+                  color: var(--text-light);
+                  box-shadow: inset 0 0 4px rgba(255,255,255,0.05);
+                  transition: all 0.3s ease;
+                }
+
+                body.light-mode .field input,
+                body.light-mode .field select,
+                body.light-mode .field textarea {
+                  background-color: #dfd5d5;
+                  color: #111;
+                  border: 1px solid #ccc;
+                }
+
+                .field input:focus,
+                .field select:focus,
+                .field textarea:focus {
+                  border-color: var(--purple);
+                  outline: none;
+                  box-shadow: 0 0 0 3px rgba(203, 42, 99, 0.4);
+                }
+
+                .field input.error,
+                .field select.error,
+                .field textarea.error {
+                  border-color: var(--error-color);
+                  box-shadow: 0 0 0 2px rgba(255, 56, 96, 0.2);
+                }
+
+                .error-message {
+                  color: var(--error-color);
+                  font-size: 0.85rem;
+                  margin-top: 5px;
+                  opacity: 0;
+                  transition: opacity 0.3s ease;
+                }
+
+                .error-message.visible {
+                  opacity: 1;
+                }
+
+                .signature-block {
+                  display: flex;
+                  flex-wrap: wrap;
+                  justify-content: space-between;
+                  gap: 20px;
+                }
+
+                .signature {
+                  background-color: var(--glass);
+                  backdrop-filter: blur(8px);
+                  -webkit-backdrop-filter: blur(8px);
+                  padding: 20px;
+                  border-radius: 12px;
+                  flex: 1;
+                  min-width: 250px;
+                  box-shadow: var(--glow);
+                  border: 1px solid rgba(255, 255, 255, 0.08);
+                }
+
+                body.light-mode .signature {
+                  background-color: rgba(0, 0, 0, 0.03);
+                  box-shadow: none;
+                  border: 1px solid rgba(0, 0, 0, 0.08);
+                }
+
+                .signature input {
+                  margin-top: 5px;
+                  padding: 10px;
+                  width: 100%;
+                  border-radius: 8px;
+                  background-color: var(--input-bg);
+                  color: var(--text-light);
+                }
+
+                body.light-mode .signature input {
+                  background-color: #fff;
+                  color: #111;
+                  border: 1px solid #ccc;
+                }
+
+                ::placeholder { color: #ccc; }
+
+                /* Fix for placeholder text in light mode */
+                body.light-mode input::placeholder,
+                body.light-mode textarea::placeholder {
+                  color: #888;
+                }
+
+                .checkbox-group {
+                  margin-top: 20px;
+                }
+
+                .checkbox-field {
+                  display: flex;
+                  flex-direction: row;
+                  align-items: center;
+                  margin-bottom: 10px;
+                }
+
+                .checkbox-field input[type="checkbox"] {
+                  margin-right: 10px;
+                }
+
+                button {
+                  padding: 15px;
+                  border: none;
+                  border-radius: 12px;
+                  background-color: #cb2a63;
+                  color: #fff;
+                  font-size: 1.1rem;
+                  font-weight: bold;
+                  box-shadow: 0 0 10px rgba(203, 42, 99, 0.5);
+                  cursor: pointer;
+                  transition: background 0.3s ease, transform 0.2s ease;
+                  margin-top: 20px;
+                }
+
+                button:hover {
+                  background-color: #a52052;
+                  transform: scale(1.02);
+                }
+
+                button:disabled {
+                  background-color: #cccccc;
+                  color: #666666;
+                  cursor: not-allowed;
+                  box-shadow: none;
+                  transform: none;
+                }
+
+                .help-text {
+                  font-size: 0.8rem;
+                  color: #ccc;
+                  margin-top: 4px;
+                }
+
+                body.light-mode .help-text {
+                  color: #666;
+                }
+
+                .success-message {
+                  display: none;
+                  background-color: var(--success-color);
+                  color: white;
+                  padding: 15px;
+                  border-radius: 12px;
+                  margin-top: 20px;
+                  text-align: center;
+                  font-weight: bold;
+                  animation: fadeIn 0.5s;
+                }
+
+                .hidden {
+                  display: none;
+                }
+
+                @keyframes fadeIn {
+                  from { opacity: 0; }
+                  to { opacity: 1; }
+                }
+
+                .form-progress {
+                  height: 8px;
+                  width: 100%;
+                  background-color: rgba(255, 255, 255, 0.1);
+                  border-radius: 4px;
+                  margin-bottom: 20px;
+                  overflow: hidden;
+                }
+
+                body.light-mode .form-progress {
+                  background-color: rgba(0, 0, 0, 0.1);
+                }
+
+                .progress-bar {
+                  height: 100%;
+                  width: 0%;
+                  background-color: #cb2a63;
+                  transition: width 0.3s ease;
+                }
+
+                .cancel-btn {
+                  background-color: #666;
+                  margin-right: 10px;
+                }
+
+                .cancel-btn:hover {
+                  background-color: #555;
+                }
+
+                .button-group {
+                  display: flex;
+                  justify-content: flex-end;
+                }
+
+                .section-header {
+                  display: flex;
+                  justify-content: space-between;
+                  align-items: center;
+                  margin-bottom: 15px;
+                }
+
+                .section-header h3 {
+                  margin-bottom: 0;
+                }
+
+                .collapse-btn {
+                  background: none;
+                  border: none;
+                  color: var(--text-light);
+                  cursor: pointer;
+                  font-size: 1.2rem;
+                  box-shadow: none;
+                  margin: 0;
+                  padding: 5px;
+                }
+
+                body.light-mode .collapse-btn {
+                  color: var(--text-dark);
+                }
+
+                .section-content {
+                  max-height: 1000px;
+                  overflow: hidden;
+                  transition: max-height 0.3s ease;
+                }
+
+                .collapsed .section-content {
+                  max-height: 0;
+                }
+
+                /* Fix for form version text in light mode */
+                body.light-mode .form-version {
+                  color: var(--text-dark);
+                }
+
+
+    </style>
+</head>
+<body>
+  <div class="toggle-container">
+    <div class="form-version">v1.2</div>
+    <label for="themeToggle">🌙 Dark / ☀️ Light Mode
+      <input type="checkbox" id="themeToggle">
+    </label>
+  </div>
+
+  <h1>System Operations Center</h1>
+  <h2>User Access Request Form</h2>
+
+  <div class="form-progress">
+    <div class="progress-bar" id="formProgress"></div>
+  </div>
+
+  <form id="accessRequestForm">
+    <div class="section">
+      <div class="section-header">
+        <h3>User Details</h3>
+        <button type="button" class="collapse-btn" data-section="user-details">−</button>
+      </div>
+      <div class="section-content" id="user-details">
+        <div class="field">
+          <label class="required">Name:</label>
+          <input type="text" name="name" id="name" required>
+          <div class="error-message" id="name-error">Please enter your name</div>
+        </div>
+        <div class="field">
+          <label class="required">Employee ID:</label>
+          <input type="text" name="employeeId" id="employeeId" required>
+          <div class="error-message" id="employeeId-error">Please enter your employee ID</div>
+        </div>
+        <div class="field">
+          <label class="required">Department:</label>
+          <select name="department" id="department" required>
+            <option value="">-- Select Department --</option>
+            <option value="IT">IT</option>
+            <option value="Finance">Finance</option>
+            <option value="HR">Human Resources</option>
+            <option value="Operations">Operations</option>
+            <option value="Marketing">Marketing</option>
+            <option value="Sales">Sales</option>
+            <option value="Legal">Legal</option>
+            <option value="R&D">Research & Development</option>
+            <option value="Customer Support">Customer Support</option>
+            <option value="Other">Other</option>
+          </select>
+          <div class="error-message" id="department-error">Please select your department</div>
+        </div>
+        <div class="field">
+          <label class="required">Ticket ID:</label>
+          <input type="text" name="ticketId" id="ticketId" required>
+          <div class="error-message" id="ticketId-error">Please enter a valid ticket ID</div>
+          <div class="help-text">The ticket ID from your service desk request</div>
+        </div>
+        <div class="field">
+          <label class="required">Email:</label>
+          <input type="email" name="email" id="email" required>
+          <div class="error-message" id="email-error">Please enter a valid email address</div>
+        </div>
+        <div class="field">
+          <label class="required">Phone (Official):</label>
+          <input type="tel" name="officialPhone" id="officialPhone" required>
+          <div class="error-message" id="officialPhone-error">Please enter a valid phone number</div>
+        </div>
+        <div class="field">
+          <label>Phone (Personal):</label>
+          <input type="tel" name="personalPhone" id="personalPhone">
+        </div>
+        <div class="field">
+          <label>Team:</label>
+          <input type="text" name="team" id="team">
+        </div>
+        <div class="field">
+          <label>Location:</label>
+          <input type="text" name="location" id="location">
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header">
+        <h3>Line Manager Details</h3>
+        <button type="button" class="collapse-btn" data-section="manager-details">−</button>
+      </div>
+      <div class="section-content" id="manager-details">
+        <div class="field">
+          <label class="required">Name:</label>
+          <input type="text" name="managerName" id="managerName" required>
+          <div class="error-message" id="managerName-error">Please enter your manager's name</div>
+        </div>
+        <div class="field">
+          <label class="required">Designation:</label>
+          <input type="text" name="managerDesignation" id="managerDesignation" required>
+          <div class="error-message" id="managerDesignation-error">Please enter your manager's designation</div>
+        </div>
+        <div class="field">
+          <label class="required">Email:</label>
+          <input type="email" name="managerEmail" id="managerEmail" required>
+          <div class="error-message" id="managerEmail-error">Please enter a valid email address</div>
+        </div>
+        <div class="field">
+          <label>Phone:</label>
+          <input type="tel" name="managerPhone" id="managerPhone">
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header">
+        <h3>Access Required</h3>
+        <button type="button" class="collapse-btn" data-section="access-details">−</button>
+      </div>
+      <div class="section-content" id="access-details">
+        <div class="field">
+          <label class="required">Application / Portal:</label>
+          <select name="application" id="application" required>
+            <option value="">-- Select Application --</option>
+            <option value="SAP">SAP</option>
+            <option value="Oracle">Oracle</option>
+            <option value="Salesforce">Salesforce</option>
+            <option value="Microsoft Dynamics">Microsoft Dynamics</option>
+            <option value="Jira">Jira</option>
+            <option value="Confluence">Confluence</option>
+            <option value="ServiceNow">ServiceNow</option>
+            <option value="Active Directory">Active Directory</option>
+            <option value="VPN">VPN</option>
+            <option value="Database">Database</option>
+            <option value="Other">Other (Please specify)</option>
+          </select>
+          <div class="error-message" id="application-error">Please select an application</div>
+        </div>
+        <div class="field hidden" id="otherAppField">
+          <label class="required">Specify Other Application:</label>
+          <input type="text" name="otherApplication" id="otherApplication">
+          <div class="error-message" id="otherApplication-error">Please specify the application</div>
+        </div>
+        <div class="field">
+          <label class="required">Level of Access:</label>
+          <select name="accessLevel" id="accessLevel" required>
+            <option value="">-- Select Access Level --</option>
+            <option value="Read-Only">Read-Only</option>
+            <option value="Standard User">Standard User</option>
+            <option value="Power User">Power User</option>
+            <option value="Admin">Administrator</option>
+            <option value="Super Admin">Super Administrator</option>
+            <option value="Custom">Custom (Please specify)</option>
+          </select>
+          <div class="error-message" id="accessLevel-error">Please select an access level</div>
+        </div>
+        <div class="field hidden" id="customAccessField">
+          <label class="required">Specify Custom Access Level:</label>
+          <input type="text" name="customAccess" id="customAccess">
+          <div class="error-message" id="customAccess-error">Please specify the custom access level</div>
+        </div>
+        <div class="field">
+          <label class="required">Purpose of Access:</label>
+          <textarea rows="3" name="accessPurpose" id="accessPurpose" required></textarea>
+          <div class="error-message" id="accessPurpose-error">Please enter the purpose of access</div>
+          <div class="help-text">Describe why this access is needed for your role</div>
+        </div>
+        <div class="checkbox-group">
+          <div class="checkbox-field">
+            <input type="checkbox" id="policyAgreement" name="policyAgreement" required>
+            <label for="policyAgreement" class="required">I agree to follow the company's security policies</label>
+          </div>
+          <div class="error-message" id="policyAgreement-error">You must agree to follow security policies</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header">
+        <h3>Access Duration</h3>
+        <button type="button" class="collapse-btn" data-section="duration-details">−</button>
+      </div>
+      <div class="section-content" id="duration-details">
+        <div class="field">
+          <label class="required">From:</label>
+          <input type="date" name="startDate" id="startDate" required>
+          <div class="error-message" id="startDate-error">Please select a start date</div>
+        </div>
+        <div class="field">
+          <label class="required">Till Date:</label>
+          <input type="date" name="endDate" id="endDate" required>
+          <div class="error-message" id="endDate-error">Please select an end date</div>
+        </div>
+        <div class="checkbox-field">
+          <input type="checkbox" id="permanentAccess" name="permanentAccess">
+          <label for="permanentAccess">Permanent Access (No end date)</label>
+        </div>
+        <div class="field">
+          <label>Justification for Long-term Access:</label>
+          <textarea rows="2" name="accessJustification" id="accessJustification"></textarea>
+          <div class="help-text">Required if access is needed for more than 90 days</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header">
+        <h3>Acknowledgement</h3>
+        <button type="button" class="collapse-btn" data-section="acknowledgement-details">−</button>
+      </div>
+      <div class="section-content" id="acknowledgement-details">
+        <div class="signature-block">
+          <div class="signature">
+            <div class="field">
+              <label class="required">Name:</label>
+              <input type="text" name="acknowledgerName" id="acknowledgerName" placeholder="Enter your name" required>
+              <div class="error-message" id="acknowledgerName-error">Please enter your name</div>
+            </div>
+            <div class="field">
+              <label class="required">Signature:</label>
+              <input type="text" name="acknowledgerSignature" id="acknowledgerSignature" placeholder="Type or draw (if supported)" required>
+              <div class="error-message" id="acknowledgerSignature-error">Please provide your signature</div>
+            </div>
+            <div class="field">
+              <label class="required">Date:</label>
+              <input type="date" name="acknowledgerDate" id="acknowledgerDate" required>
+              <div class="error-message" id="acknowledgerDate-error">Please select a date</div>
+            </div>
+          </div>
+
+          <div class="signature">
+            <div class="field">
+              <label class="required">Request Initiated By:</label>
+              <input type="text" name="requesterName" id="requesterName" placeholder="Requester name" required>
+              <div class="error-message" id="requesterName-error">Please enter the requester's name</div>
+            </div>
+            <div class="field">
+              <label class="required">Signature:</label>
+              <input type="text" name="requesterSignature" id="requesterSignature" placeholder="Signature" required>
+              <div class="error-message" id="requesterSignature-error">Please provide the requester's signature</div>
+            </div>
+          </div>
+
+          <div class="signature">
+            <div class="field">
+              <label>Approved By (Business Owner):</label>
+              <input type="text" name="approverName" id="approverName" placeholder="Approver name">
+            </div>
+            <div class="field">
+              <label>Signature:</label>
+              <input type="text" name="approverSignature" id="approverSignature" placeholder="Signature">
+            </div>
+          </div>
+        </div>
+        <div class="checkbox-field">
+          <input type="checkbox" id="termsAgreement" name="termsAgreement" required>
+          <label for="termsAgreement" class="required">I understand that misuse of this access may result in disciplinary action</label>
+        </div>
+        <div class="error-message" id="termsAgreement-error">You must agree to the terms</div>
+      </div>
+    </div>
+
+    <div class="button-group">
+      <button type="button" class="cancel-btn" id="cancelBtn">Cancel</button>
+      <button type="submit" id="submitBtn">Submit Request</button>
+    </div>
+  </form>
+
+  <div class="success-message" id="successMessage">
+    Your access request has been submitted successfully!<br>
+    A confirmation email will be sent to your email address.
+  </div>
+
+  <script>
+    // Theme toggle functionality
+    const toggle = document.getElementById("themeToggle");
+    toggle.addEventListener("change", () => {
+      document.body.classList.toggle("light-mode", toggle.checked);
+    });
+
+    // Form validation and submission
+    const form = document.getElementById('accessRequestForm');
+    const successMessage = document.getElementById('successMessage');
+    const progressBar = document.getElementById('formProgress');
+    const requiredFields = form.querySelectorAll('[required]');
+    const submitBtn = document.getElementById('submitBtn');
+    const cancelBtn = document.getElementById('cancelBtn');
+    
+    // Handle "Other" application selection
+    const applicationSelect = document.getElementById('application');
+    const otherAppField = document.getElementById('otherAppField');
+    applicationSelect.addEventListener('change', () => {
+      if (applicationSelect.value === 'Other') {
+        otherAppField.classList.remove('hidden');
+        document.getElementById('otherApplication').setAttribute('required', '');
+      } else {
+        otherAppField.classList.add('hidden');
+        document.getElementById('otherApplication').removeAttribute('required');
+      }
+      updateFormProgress();
+    });
+
+    // Handle "Custom" access level selection
+    const accessLevelSelect = document.getElementById('accessLevel');
+    const customAccessField = document.getElementById('customAccessField');
+    accessLevelSelect.addEventListener('change', () => {
+      if (accessLevelSelect.value === 'Custom') {
+        customAccessField.classList.remove('hidden');
+        document.getElementById('customAccess').setAttribute('required', '');
+      } else {
+        customAccessField.classList.add('hidden');
+        document.getElementById('customAccess').removeAttribute('required');
+      }
+      updateFormProgress();
+    });
+
+    // Handle permanent access checkbox
+    const permanentAccessCheckbox = document.getElementById('permanentAccess');
+    const endDateField = document.getElementById('endDate');
+    const accessJustificationField = document.getElementById('accessJustification');
+    
+    permanentAccessCheckbox.addEventListener('change', () => {
+      if (permanentAccessCheckbox.checked) {
+        endDateField.disabled = true;
+        endDateField.removeAttribute('required');
+        accessJustificationField.setAttribute('required', '');
+      } else {
+        endDateField.disabled = false;
+        endDateField.setAttribute('required', '');
+        accessJustificationField.removeAttribute('required');
+      }
+      updateFormProgress();
+    });
+
+    // Set today's date as the minimum date for start date
+    const today = new Date();
+    const formattedDate = today.toISOString().split('T')[0];
+    document.getElementById('startDate').min = formattedDate;
+
+    // Ensure end date is after start date
+    const startDateInput = document.getElementById('startDate');
+    const endDateInput = document.getElementById('endDate');
+    
+    startDateInput.addEventListener('change', () => {
+      endDateInput.min = startDateInput.value;
+      if (endDateInput.value && new Date(endDateInput.value) < new Date(startDateInput.value)) {
+        endDateInput.value = startDateInput.value;
+      }
+    });
+
+    // Pre-fill current date in the acknowledgement section
+    document.getElementById('acknowledgerDate').value = formattedDate;
+
+    // Section collapse functionality
+    const collapseBtns = document.querySelectorAll('.collapse-btn');
+    collapseBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const sectionId = btn.getAttribute('data-section');
+        const section = btn.closest('.section');
+        section.classList.toggle('collapsed');
+        btn.textContent = section.classList.contains('collapsed') ? '+' : '−';
+      });
+    });
+
+    // Update progress bar based on completed fields
+    function updateFormProgress() {
+      let totalRequired = 0;
+      let completedRequired = 0;
+      
+      // Count active required fields (considering conditional fields)
+      const activeRequiredFields = Array.from(form.querySelectorAll('[required]:not([disabled])')).filter(
+        field => !field.closest('.hidden')
+      );
+      
+      totalRequired = activeRequiredFields.length;
+      
+      // Count completed fields
+      activeRequiredFields.forEach(field => {
+        if (field.type === 'checkbox') {
+          if (field.checked) completedRequired++;
+        } else if (field.value.trim() !== '') {
+          completedRequired++;
+        }
+      });
+      
+      const progressPercent = totalRequired > 0 ? (completedRequired / totalRequired) * 100 : 0;
+      progressBar.style.width = `${progressPercent}%`;
+      
+      // Update progress bar color based on completion
+      if (progressPercent < 30) {
+        progressBar.style.backgroundColor = '#ff3860';
+      } else if (progressPercent < 70) {
+        progressBar.style.backgroundColor = '#ffdd57';
+      } else {
+        progressBar.style.backgroundColor = '#23d160';
+      }
+    }
+
+    // Validate form on input change
+    requiredFields.forEach(field => {
+      field.addEventListener('input', () => {
+        validateField(field);
+        updateFormProgress();
+      });
+      
+      field.addEventListener('blur', () => {
+        validateField(field);
+      });
+    });
+
+    // Field validation function
+    function validateField(field) {
+      const errorId = `${field.id}-error`;
+      const errorElement = document.getElementById(errorId);
+      
+      if (!errorElement) return;
+      
+      let isValid = true;
+      
+      if (field.type === 'checkbox') {
+        isValid = field.checked;
+      } else if (field.type === 'email') {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        isValid = emailRegex.test(field.value);
+      } else if (field.type === 'tel') {
+        const phoneRegex = /^\+?[0-9\s\-()]{7,20}$/;
+        isValid = phoneRegex.test(field.value);
+      } else {
+        isValid = field.value.trim() !== '';
+      }
+      
+      if (!isValid && field.required) {
+        field.classList.add('error');
+        errorElement.classList.add('visible');
+      } else {
+        field.classList.remove('error');
+        errorElement.classList.remove('visible');
+      }
+      
+      return isValid;
+    }
+
+    // Form submission handler
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      
+      if (validateForm()) {
+        // Show loading state
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Submitting...';
+        
+        // Simulate form submission (replace with actual submission)
+        setTimeout(() => {
+          // Hide form and show success message
+          form.style.display = 'none';
+          successMessage.style.display = 'block';
+          
+          // Log form data (for demonstration)
+          const formData = new FormData(form);
+          console.log('Form submitted with data:');
+          for (let [key, value] of formData.entries()) {
+            console.log(`${key}: ${value}`);
+          }
+        }, 1500);
+      } else {
+        // Scroll to the first error
+        const firstError = document.querySelector('.error');
+        if (firstError) {
+          const section = firstError.closest('.section');
+          if (section.classList.contains('collapsed')) {
+            const sectionId = section.querySelector('.collapse-btn').getAttribute('data-section');
+            section.classList.remove('collapsed');
+            section.querySelector('.collapse-btn').textContent = '−';
+          }
+          firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          firstError.focus();
+        }
+      }
+    });
+
+    // Cancel button handler
+    cancelBtn.addEventListener('click', () => {
+      if (confirm('Are you sure you want to cancel? All entered data will be lost.')) {
+        form.reset();
+        // Reset any custom states
+        document.querySelectorAll('.error').forEach(elem => elem.classList.remove('error'));
+        document.querySelectorAll('.error-message').forEach(elem => elem.classList.remove('visible'));
+        otherAppField.classList.add('hidden');
+        customAccessField.classList.add('hidden');
+        endDateInput.disabled = false;
+        updateFormProgress();
+      }
+    });
+
+    // Initial progress update
+    updateFormProgress();
+
+    // Auto-fill functionality for testing
+    function autoFillForm() {
+      document.getElementById('name').value = 'John Doe';
+      document.getElementById('employeeId').value = 'EMP12345';
+      document.getElementById('department').value = 'IT';
+      document.getElementById('ticketId').value = 'TICKET-789012';
+      document.getElementById('email').value = 'john.doe@company.com';
+      document.getElementById('officialPhone').value = '+1-555-123-4567';
+      document.getElementById('team').value = 'DevOps Team';
+      document.getElementById('location').value = 'Headquarters';
+      
+      document.getElementById('managerName').value = 'Jane Smith';
+      document.getElementById('managerDesignation').value = 'IT Director';
+      document.getElementById('managerEmail').value = 'jane.smith@company.com';
+      document.getElementById('managerPhone').value = '+1-555-765-4321';
+      
+      document.getElementById('application').value = 'ServiceNow';
+      document.getElementById('accessLevel').value = 'Standard User';
+      document.getElementById('accessPurpose').value = 'Need access to create and manage service tickets for the development team.';
+      document.getElementById('policyAgreement').checked = true;
+      
+      const today = new Date();
+      const nextMonth = new Date();
+      nextMonth.setMonth(today.getMonth() + 1);
+      
+      document.getElementById('startDate').value = today.toISOString().split('T')[0];
+      document.getElementById('endDate').value = nextMonth.toISOString().split('T')[0];
+      
+      document.getElementById('acknowledgerName').value = 'John Doe';
+      document.getElementById('acknowledgerSignature').value = 'J. Doe';
+      document.getElementById('acknowledgerDate').value = today.toISOString().split('T')[0];
+      
+      document.getElementById('requesterName').value = 'John Doe';
+      document.getElementById('requesterSignature').value = 'J. Doe';
+      
+      document.getElementById('termsAgreement').checked = true;
+      
+      updateFormProgress();
+    }
+    
+    // Uncomment the line below to auto-fill the form for testing
+    // autoFillForm();
+
+
+    // Validate all fields
+    function validateForm() {
+      let isValid = true;
+      
+      // Validate all required fields
+      requiredFields.forEach(field => {
+        if (!validateField(field)) {
+          isValid = false;
+        }
+      });
+      
+      // Check date range
+      if (!permanentAccessCheckbox.checked && endDateInput.value && startDateInput.value) {
+        const startDate = new Date(startDateInput.value);
+        const endDate = new Date(endDateInput.value);
+        
+        if (endDate < startDate) {
+          endDateInput.classList.add('error');
+          document.getElementById('endDate-error').textContent = 'End date must be after start date';
+          document.getElementById('endDate-error').classList.add('visible');
+          isValid = false;
+        }
+        
+        // Check if long-term access justification is needed (> 90 days)
+        const daysDiff = Math.floor((endDate - startDate) / (1000 * 60 * 60 * 24));
+        if (daysDiff > 90 && !accessJustificationField.value.trim()) {
+          accessJustificationField.classList.add('error');
+          const errorElem = document.createElement('div');
+          errorElem.className = 'error-message visible';
+          errorElem.textContent = 'Justification required for access longer than 90 days';
+          accessJustificationField.after(errorElem);
+          isValid = false;
+        }
+      }
+    }
+        </script>
+</body>
+</html>
