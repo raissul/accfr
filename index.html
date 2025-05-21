@@ -823,140 +823,211 @@
       return isValid;
     }
 
-    // Form submission handler
-    form.addEventListener('submit', (e) => {
-      e.preventDefault();
-      
-      if (validateForm()) {
-        // Show loading state
-        submitBtn.disabled = true;
-        submitBtn.textContent = 'Submitting...';
-        
-        // Simulate form submission (replace with actual submission)
-        setTimeout(() => {
-          // Hide form and show success message
-          form.style.display = 'none';
-          successMessage.style.display = 'block';
-          
-          // Log form data (for demonstration)
-          const formData = new FormData(form);
-          console.log('Form submitted with data:');
-          for (let [key, value] of formData.entries()) {
-            console.log(`${key}: ${value}`);
-          }
-        }, 1500);
-      } else {
-        // Scroll to the first error
-        const firstError = document.querySelector('.error');
-        if (firstError) {
-          const section = firstError.closest('.section');
-          if (section.classList.contains('collapsed')) {
-            const sectionId = section.querySelector('.collapse-btn').getAttribute('data-section');
-            section.classList.remove('collapsed');
-            section.querySelector('.collapse-btn').textContent = '−';
-          }
-          firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
-          firstError.focus();
-        }
-      }
-    });
+    // Replace your existing form submission event listener with this code
+// This goes at the end of your script section in your HTML file
 
-    // Cancel button handler
-    cancelBtn.addEventListener('click', () => {
-      if (confirm('Are you sure you want to cancel? All entered data will be lost.')) {
-        form.reset();
-        // Reset any custom states
-        document.querySelectorAll('.error').forEach(elem => elem.classList.remove('error'));
-        document.querySelectorAll('.error-message').forEach(elem => elem.classList.remove('visible'));
-        otherAppField.classList.add('hidden');
-        customAccessField.classList.add('hidden');
-        endDateInput.disabled = false;
-        updateFormProgress();
-      }
-    });
-
-    // Initial progress update
-    updateFormProgress();
-
-    // Auto-fill functionality for testing
-    function autoFillForm() {
-      document.getElementById('name').value = 'John Doe';
-      document.getElementById('employeeId').value = 'EMP12345';
-      document.getElementById('department').value = 'IT';
-      document.getElementById('ticketId').value = 'TICKET-789012';
-      document.getElementById('email').value = 'john.doe@company.com';
-      document.getElementById('officialPhone').value = '+1-555-123-4567';
-      document.getElementById('team').value = 'DevOps Team';
-      document.getElementById('location').value = 'Headquarters';
-      
-      document.getElementById('managerName').value = 'Jane Smith';
-      document.getElementById('managerDesignation').value = 'IT Director';
-      document.getElementById('managerEmail').value = 'jane.smith@company.com';
-      document.getElementById('managerPhone').value = '+1-555-765-4321';
-      
-      document.getElementById('application').value = 'ServiceNow';
-      document.getElementById('accessLevel').value = 'Standard User';
-      document.getElementById('accessPurpose').value = 'Need access to create and manage service tickets for the development team.';
-      document.getElementById('policyAgreement').checked = true;
-      
-      const today = new Date();
-      const nextMonth = new Date();
-      nextMonth.setMonth(today.getMonth() + 1);
-      
-      document.getElementById('startDate').value = today.toISOString().split('T')[0];
-      document.getElementById('endDate').value = nextMonth.toISOString().split('T')[0];
-      
-      document.getElementById('acknowledgerName').value = 'John Doe';
-      document.getElementById('acknowledgerSignature').value = 'J. Doe';
-      document.getElementById('acknowledgerDate').value = today.toISOString().split('T')[0];
-      
-      document.getElementById('requesterName').value = 'John Doe';
-      document.getElementById('requesterSignature').value = 'J. Doe';
-      
-      document.getElementById('termsAgreement').checked = true;
-      
-      updateFormProgress();
+// Form submission handler - UPDATED VERSION
+form.addEventListener('submit', function(e) {
+  e.preventDefault();
+  
+  let isValid = validateForm();
+  
+  if (isValid) {
+    // Show loading state
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Submitting...';
+    
+    // Collect form data
+    const formData = new FormData(form);
+    const jsonData = {};
+    
+    for (let [key, value] of formData.entries()) {
+      jsonData[key] = value;
     }
     
-    // Uncomment the line below to auto-fill the form for testing
-    // autoFillForm();
-
-
-    // Validate all fields
-    function validateForm() {
-      let isValid = true;
+    // Add checkbox values that might not be in the FormData if unchecked
+    jsonData.policyAgreement = document.getElementById('policyAgreement').checked;
+    jsonData.permanentAccess = document.getElementById('permanentAccess').checked;
+    jsonData.termsAgreement = document.getElementById('termsAgreement').checked;
+    
+    // For testing without Google Script connection
+    // Remove this condition and use only the fetch code when your Google Script is ready
+    if (1) { // Change to "if (0)" when you're ready to use Google Sheets
+      console.log('Form data (test mode):', jsonData);
       
-      // Validate all required fields
-      requiredFields.forEach(field => {
-        if (!validateField(field)) {
-          isValid = false;
+      // Simulate successful submission
+      setTimeout(() => {
+        // Hide form and show success message
+        form.style.display = 'none';
+        successMessage.style.display = 'block';
+      }, 1500);
+    } else {
+      // Send the data to Google Apps Script Web App
+      fetch('YOUR_GOOGLE_SCRIPT_URL_HERE', {
+        method: 'POST',
+        body: JSON.stringify(jsonData),
+        headers: {
+          'Content-Type': 'application/json'
         }
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log('Success:', data);
+        
+        // Hide form and show success message
+        form.style.display = 'none';
+        successMessage.style.display = 'block';
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        alert('There was an error submitting your form. Please try again later.');
+        
+        // Reset the submit button
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Submit Request';
       });
-      
-      // Check date range
-      if (!permanentAccessCheckbox.checked && endDateInput.value && startDateInput.value) {
-        const startDate = new Date(startDateInput.value);
-        const endDate = new Date(endDateInput.value);
-        
-        if (endDate < startDate) {
-          endDateInput.classList.add('error');
-          document.getElementById('endDate-error').textContent = 'End date must be after start date';
-          document.getElementById('endDate-error').classList.add('visible');
-          isValid = false;
-        }
-        
-        // Check if long-term access justification is needed (> 90 days)
-        const daysDiff = Math.floor((endDate - startDate) / (1000 * 60 * 60 * 24));
-        if (daysDiff > 90 && !accessJustificationField.value.trim()) {
-          accessJustificationField.classList.add('error');
-          const errorElem = document.createElement('div');
-          errorElem.className = 'error-message visible';
-          errorElem.textContent = 'Justification required for access longer than 90 days';
-          accessJustificationField.after(errorElem);
-          isValid = false;
-        }
+    }
+  } else {
+    // Scroll to the first error
+    const firstError = document.querySelector('.error');
+    if (firstError) {
+      const section = firstError.closest('.section');
+      if (section.classList.contains('collapsed')) {
+        const sectionId = section.querySelector('.collapse-btn').getAttribute('data-section');
+        section.classList.remove('collapsed');
+        section.querySelector('.collapse-btn').textContent = '−';
+      }
+      firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      firstError.focus();
+    }
+  }
+});
+
+// Complete validateForm function 
+// This fixes the incomplete validateForm function in your original code
+function validateForm() {
+  let isValid = true;
+  
+  // Validate all required fields
+  const requiredFields = form.querySelectorAll('[required]:not([disabled])');
+  requiredFields.forEach(field => {
+    if (!validateField(field)) {
+      isValid = false;
+    }
+  });
+  
+  // Check date range
+  if (!permanentAccessCheckbox.checked && endDateInput.value && startDateInput.value) {
+    const startDate = new Date(startDateInput.value);
+    const endDate = new Date(endDateInput.value);
+    
+    if (endDate < startDate) {
+      endDateInput.classList.add('error');
+      document.getElementById('endDate-error').textContent = 'End date must be after start date';
+      document.getElementById('endDate-error').classList.add('visible');
+      isValid = false;
+    }
+    
+    // Check if long-term access justification is needed (> 90 days)
+    const daysDiff = Math.floor((endDate - startDate) / (1000 * 60 * 60 * 24));
+    if (daysDiff > 90 && !accessJustificationField.value.trim()) {
+      accessJustificationField.classList.add('error');
+      // Check if error message already exists
+      let errorElem = accessJustificationField.nextElementSibling;
+      if (!errorElem || !errorElem.classList.contains('error-message')) {
+        errorElem = document.createElement('div');
+        errorElem.className = 'error-message visible';
+        errorElem.textContent = 'Justification required for access longer than 90 days';
+        accessJustificationField.after(errorElem);
+      } else {
+        errorElem.classList.add('visible');
+      }
+      isValid = false;
+    }
+  }
+  
+  return isValid;
+}
+
+// Add this to your existing JavaScript at the end of your HTML file
+
+// Update your form submission handler to send data to Google Sheets
+form.addEventListener('submit', (e) => {
+  e.preventDefault();
+  
+  if (validateForm()) {
+    // Show loading state
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Submitting...';
+    
+    // Collect form data
+    const formData = new FormData(form);
+    const jsonData = {};
+    
+    for (let [key, value] of formData.entries()) {
+      // Convert checkbox values to boolean
+      if (value === 'on') {
+        jsonData[key] = true;
+      } else {
+        jsonData[key] = value;
       }
     }
+    
+    // Add checkbox values that might not be in the FormData if unchecked
+    jsonData.policyAgreement = document.getElementById('policyAgreement').checked;
+    jsonData.permanentAccess = document.getElementById('permanentAccess').checked;
+    jsonData.termsAgreement = document.getElementById('termsAgreement').checked;
+    
+    // Send the data to Google Apps Script Web App
+    fetch('https://script.google.com/macros/s/AKfycbx8zIq2hf_ZRPMUtIve0Gf_U1KqfO3QcpC8eU8R7SxKizfwJDfBY8bZzX6VO12k4Gy4/exec', {
+      method: 'POST',
+      body: JSON.stringify(jsonData),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log('Success:', data);
+      
+      // Hide form and show success message
+      form.style.display = 'none';
+      successMessage.style.display = 'block';
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      alert('There was an error submitting your form. Please try again later.');
+      
+      // Reset the submit button
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Submit Request';
+    });
+  } else {
+    // Scroll to the first error
+    const firstError = document.querySelector('.error');
+    if (firstError) {
+      const section = firstError.closest('.section');
+      if (section.classList.contains('collapsed')) {
+        const sectionId = section.querySelector('.collapse-btn').getAttribute('data-section');
+        section.classList.remove('collapsed');
+        section.querySelector('.collapse-btn').textContent = '−';
+      }
+      firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      firstError.focus();
+    }
+  }
+});
+
+
+
+
+
+
+
+
+
+
+
         </script>
 </body>
 </html>
