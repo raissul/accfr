@@ -5,391 +5,384 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>User Access Request Form</title>
   <style> 
-                      :root {
-                  --purple: #ffffff;
-                  --blue: #181341;
-                  --glow: 0 0 20px rgba(2, 5, 41, 0.6), 0 0 40px rgba(34, 29, 73, 0.6);
-                  --glass: rgba(236, 229, 229, 0.05);
-                  --input-bg: rgba(255, 255, 255, 0.1);
-                  --text-light: #f0f0f0;
-                  --bg-dark: #000;
-                  --bg-light: #f6f6f6;
-                  --text-dark: #111;
-                  --success-color: #4CAF50;
-                  --error-color: #ff3860;
-                }
+    :root {
+      --purple: #ffffff;
+      --blue: #181341;
+      --glow: 0 0 20px rgba(2, 5, 41, 0.6), 0 0 40px rgba(34, 29, 73, 0.6);
+      --glass: rgba(236, 229, 229, 0.05);
+      --input-bg: rgba(255, 255, 255, 0.1);
+      --text-light: #f0f0f0;
+      --bg-dark: #000;
+      --bg-light: #f6f6f6;
+      --text-dark: #111;
+      --success-color: #4CAF50;
+      --error-color: #ff3860;
+    }
 
-                body {
-                  background-color: var(--bg-dark);
-                  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-                  padding: 30px;
-                  max-width: 960px;
-                  margin: auto;
-                  color: var(--text-light);
-                  transition: background 0.3s ease, color 0.3s ease;
-                }
+    body {
+      background-color: var(--bg-dark);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      padding: 30px;
+      max-width: 960px;
+      margin: auto;
+      color: var(--text-light);
+      transition: background 0.3s ease, color 0.3s ease;
+    }
 
-                body.light-mode {
-                  background-color: var(--bg-light);
-                  color: var(--text-dark);
-                }
+    body.light-mode {
+      background-color: var(--bg-light);
+      color: var(--text-dark);
+    }
 
-                h1, h2 {
-                  text-align: center;
-                  color: var(--text-light);
-                  text-shadow: 0 0 10px var(--purple);
-                }
+    h1, h2 {
+      text-align: center;
+      color: var(--text-light);
+      text-shadow: 0 0 10px var(--purple);
+    }
 
-                body.light-mode h1, body.light-mode h2 {
-                  color: var(--text-dark);
-                  text-shadow: none;
-                }
+    body.light-mode h1, body.light-mode h2 {
+      color: var(--text-dark);
+      text-shadow: none;
+    }
 
-                h1 { font-size: 2.5rem; margin-bottom: 0.3em; }
-                h2 { font-size: 1.6rem; margin-bottom: 1.5em; }
+    h1 { font-size: 2.5rem; margin-bottom: 0.3em; }
+    h2 { font-size: 1.6rem; margin-bottom: 1.5em; }
 
-                .toggle-container {
-                  display: flex;
-                  justify-content: space-between;
-                  align-items: center;
-                  margin-bottom: 20px;
-                }
+    .toggle-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
 
-                .toggle-container label {
-                  font-weight: bold;
-                  font-size: 0.9rem;
-                  cursor: pointer;
-                }
+    .toggle-container label {
+      font-weight: bold;
+      font-size: 0.9rem;
+      cursor: pointer;
+    }
 
-                /* Fix for toggle container label in light mode */
-                body.light-mode .toggle-container label {
-                  color: var(--text-dark);
-                }
+    body.light-mode .toggle-container label {
+      color: var(--text-dark);
+    }
 
-                input[type="checkbox"] {
-                  margin-left: 10px;
-                  transform: scale(1.2);
-                  cursor: pointer;
-                }
+    input[type="checkbox"] {
+      margin-left: 10px;
+      transform: scale(1.2);
+      cursor: pointer;
+    }
 
-                form {
-                  display: flex;
-                  flex-direction: column;
-                  gap: 25px;
-                }
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 25px;
+    }
 
-                .section {
-                  background: var(--glass);
-                  border-radius: 16px;
-                  padding: 25px;
-                  backdrop-filter: blur(12px);
-                  -webkit-backdrop-filter: blur(12px);
-                  box-shadow: var(--glow);
-                  border: 1px solid rgba(255, 255, 255, 0.08);
-                  transition: transform 0.2s ease;
-                }
+    .section {
+      background: var(--glass);
+      border-radius: 16px;
+      padding: 25px;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      box-shadow: var(--glow);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      transition: transform 0.2s ease;
+    }
 
-                body.light-mode .section {
-                  background-color: rgba(255, 255, 255, 0.6);
-                  backdrop-filter: blur(12px);
-                  -webkit-backdrop-filter: blur(12px);
-                  box-shadow: 0 0 16px rgba(203, 42, 99, 0.2), 0 0 32px rgba(34, 29, 73, 0.1);
-                  border: 1px solid rgba(0, 0, 0, 0.1);
-                  color: var(--text-dark);
-                }
+    body.light-mode .section {
+      background-color: rgba(255, 255, 255, 0.6);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      box-shadow: 0 0 16px rgba(203, 42, 99, 0.2), 0 0 32px rgba(34, 29, 73, 0.1);
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      color: var(--text-dark);
+    }
 
-                .section:hover { transform: scale(1.01); }
+    .section:hover { transform: scale(1.01); }
 
-                h3 {
-                  margin-bottom: 15px;
-                  color: var(--purple);
-                  font-size: 1.3rem;
-                }
+    h3 {
+      margin-bottom: 15px;
+      color: var(--purple);
+      font-size: 1.3rem;
+    }
 
-                /* Fix for section headings in light mode */
-                body.light-mode h3 {
-                  color: var(--text-dark);
-                }
+    body.light-mode h3 {
+      color: var(--text-dark);
+    }
 
-                .field {
-                  display: flex;
-                  flex-direction: column;
-                  margin-bottom: 15px;
-                  position: relative;
-                }
+    .field {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 15px;
+      position: relative;
+    }
 
-                .field label {
-                  margin-bottom: 5px;
-                  font-weight: bold;
-                  color: var(--text-light);
-                  display: flex;
-                  align-items: center;
-                }
+    .field label {
+      margin-bottom: 5px;
+      font-weight: bold;
+      color: var(--text-light);
+      display: flex;
+      align-items: center;
+    }
 
-                .required:after {
-                  content: "*";
-                  color: #cb2a63;
-                  margin-left: 4px;
-                }
+    .required:after {
+      content: "*";
+      color: #cb2a63;
+      margin-left: 4px;
+    }
 
-                /* Fixed styles for all label types in light mode */
-                body.light-mode .field label,
-                body.light-mode .checkbox-field label,
-                body.light-mode label.required,
-                body.light-mode .signature label {
-                  color: var(--text-dark);
-                }
+    body.light-mode .field label,
+    body.light-mode .checkbox-field label,
+    body.light-mode label.required,
+    body.light-mode .signature label {
+      color: var(--text-dark);
+    }
 
-                .field input,
-                .field select,
-                .field textarea {
-                  padding: 12px;
-                  border-radius: 10px;
-                  border: 1px solid rgba(235, 225, 225, 0.15);
-                  background-color: var(--input-bg);
-                  font-size: 1rem;
-                  color: var(--text-light);
-                  box-shadow: inset 0 0 4px rgba(255,255,255,0.05);
-                  transition: all 0.3s ease;
-                }
+    .field input,
+    .field select,
+    .field textarea {
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px solid rgba(235, 225, 225, 0.15);
+      background-color: var(--input-bg);
+      font-size: 1rem;
+      color: var(--text-light);
+      box-shadow: inset 0 0 4px rgba(255,255,255,0.05);
+      transition: all 0.3s ease;
+    }
 
-                body.light-mode .field input,
-                body.light-mode .field select,
-                body.light-mode .field textarea {
-                  background-color: #dfd5d5;
-                  color: #111;
-                  border: 1px solid #ccc;
-                }
+    body.light-mode .field input,
+    body.light-mode .field select,
+    body.light-mode .field textarea {
+      background-color: #dfd5d5;
+      color: #111;
+      border: 1px solid #ccc;
+    }
 
-                .field input:focus,
-                .field select:focus,
-                .field textarea:focus {
-                  border-color: var(--purple);
-                  outline: none;
-                  box-shadow: 0 0 0 3px rgba(203, 42, 99, 0.4);
-                }
+    .field input:focus,
+    .field select:focus,
+    .field textarea:focus {
+      border-color: var(--purple);
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(203, 42, 99, 0.4);
+    }
 
-                .field input.error,
-                .field select.error,
-                .field textarea.error {
-                  border-color: var(--error-color);
-                  box-shadow: 0 0 0 2px rgba(255, 56, 96, 0.2);
-                }
+    .field input.error,
+    .field select.error,
+    .field textarea.error {
+      border-color: var(--error-color);
+      box-shadow: 0 0 0 2px rgba(255, 56, 96, 0.2);
+    }
 
-                .error-message {
-                  color: var(--error-color);
-                  font-size: 0.85rem;
-                  margin-top: 5px;
-                  opacity: 0;
-                  transition: opacity 0.3s ease;
-                }
+    .error-message {
+      color: var(--error-color);
+      font-size: 0.85rem;
+      margin-top: 5px;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
 
-                .error-message.visible {
-                  opacity: 1;
-                }
+    .error-message.visible {
+      opacity: 1;
+    }
 
-                .signature-block {
-                  display: flex;
-                  flex-wrap: wrap;
-                  justify-content: space-between;
-                  gap: 20px;
-                }
+    .signature-block {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 20px;
+    }
 
-                .signature {
-                  background-color: var(--glass);
-                  backdrop-filter: blur(8px);
-                  -webkit-backdrop-filter: blur(8px);
-                  padding: 20px;
-                  border-radius: 12px;
-                  flex: 1;
-                  min-width: 250px;
-                  box-shadow: var(--glow);
-                  border: 1px solid rgba(255, 255, 255, 0.08);
-                }
+    .signature {
+      background-color: var(--glass);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      padding: 20px;
+      border-radius: 12px;
+      flex: 1;
+      min-width: 250px;
+      box-shadow: var(--glow);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
 
-                body.light-mode .signature {
-                  background-color: rgba(0, 0, 0, 0.03);
-                  box-shadow: none;
-                  border: 1px solid rgba(0, 0, 0, 0.08);
-                }
+    body.light-mode .signature {
+      background-color: rgba(0, 0, 0, 0.03);
+      box-shadow: none;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+    }
 
-                .signature input {
-                  margin-top: 5px;
-                  padding: 10px;
-                  width: 100%;
-                  border-radius: 8px;
-                  background-color: var(--input-bg);
-                  color: var(--text-light);
-                }
+    .signature input {
+      margin-top: 5px;
+      padding: 10px;
+      width: 100%;
+      border-radius: 8px;
+      background-color: var(--input-bg);
+      color: var(--text-light);
+    }
 
-                body.light-mode .signature input {
-                  background-color: #fff;
-                  color: #111;
-                  border: 1px solid #ccc;
-                }
+    body.light-mode .signature input {
+      background-color: #fff;
+      color: #111;
+      border: 1px solid #ccc;
+    }
 
-                ::placeholder { color: #ccc; }
+    ::placeholder { color: #ccc; }
 
-                /* Fix for placeholder text in light mode */
-                body.light-mode input::placeholder,
-                body.light-mode textarea::placeholder {
-                  color: #888;
-                }
+    body.light-mode input::placeholder,
+    body.light-mode textarea::placeholder {
+      color: #888;
+    }
 
-                .checkbox-group {
-                  margin-top: 20px;
-                }
+    .checkbox-group {
+      margin-top: 20px;
+    }
 
-                .checkbox-field {
-                  display: flex;
-                  flex-direction: row;
-                  align-items: center;
-                  margin-bottom: 10px;
-                }
+    .checkbox-field {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      margin-bottom: 10px;
+    }
 
-                .checkbox-field input[type="checkbox"] {
-                  margin-right: 10px;
-                }
+    .checkbox-field input[type="checkbox"] {
+      margin-right: 10px;
+    }
 
-                button {
-                  padding: 15px;
-                  border: none;
-                  border-radius: 12px;
-                  background-color: #cb2a63;
-                  color: #fff;
-                  font-size: 1.1rem;
-                  font-weight: bold;
-                  box-shadow: 0 0 10px rgba(203, 42, 99, 0.5);
-                  cursor: pointer;
-                  transition: background 0.3s ease, transform 0.2s ease;
-                  margin-top: 20px;
-                }
+    button {
+      padding: 15px;
+      border: none;
+      border-radius: 12px;
+      background-color: #cb2a63;
+      color: #fff;
+      font-size: 1.1rem;
+      font-weight: bold;
+      box-shadow: 0 0 10px rgba(203, 42, 99, 0.5);
+      cursor: pointer;
+      transition: background 0.3s ease, transform 0.2s ease;
+      margin-top: 20px;
+    }
 
-                button:hover {
-                  background-color: #a52052;
-                  transform: scale(1.02);
-                }
+    button:hover {
+      background-color: #a52052;
+      transform: scale(1.02);
+    }
 
-                button:disabled {
-                  background-color: #cccccc;
-                  color: #666666;
-                  cursor: not-allowed;
-                  box-shadow: none;
-                  transform: none;
-                }
+    button:disabled {
+      background-color: #cccccc;
+      color: #666666;
+      cursor: not-allowed;
+      box-shadow: none;
+      transform: none;
+    }
 
-                .help-text {
-                  font-size: 0.8rem;
-                  color: #ccc;
-                  margin-top: 4px;
-                }
+    .help-text {
+      font-size: 0.8rem;
+      color: #ccc;
+      margin-top: 4px;
+    }
 
-                body.light-mode .help-text {
-                  color: #666;
-                }
+    body.light-mode .help-text {
+      color: #666;
+    }
 
-                .success-message {
-                  display: none;
-                  background-color: var(--success-color);
-                  color: white;
-                  padding: 15px;
-                  border-radius: 12px;
-                  margin-top: 20px;
-                  text-align: center;
-                  font-weight: bold;
-                  animation: fadeIn 0.5s;
-                }
+    .success-message {
+      display: none;
+      background-color: var(--success-color);
+      color: white;
+      padding: 15px;
+      border-radius: 12px;
+      margin-top: 20px;
+      text-align: center;
+      font-weight: bold;
+      animation: fadeIn 0.5s;
+    }
 
-                .hidden {
-                  display: none;
-                }
+    .hidden {
+      display: none;
+    }
 
-                @keyframes fadeIn {
-                  from { opacity: 0; }
-                  to { opacity: 1; }
-                }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
 
-                .form-progress {
-                  height: 8px;
-                  width: 100%;
-                  background-color: rgba(255, 255, 255, 0.1);
-                  border-radius: 4px;
-                  margin-bottom: 20px;
-                  overflow: hidden;
-                }
+    .form-progress {
+      height: 8px;
+      width: 100%;
+      background-color: rgba(255, 255, 255, 0.1);
+      border-radius: 4px;
+      margin-bottom: 20px;
+      overflow: hidden;
+    }
 
-                body.light-mode .form-progress {
-                  background-color: rgba(0, 0, 0, 0.1);
-                }
+    body.light-mode .form-progress {
+      background-color: rgba(0, 0, 0, 0.1);
+    }
 
-                .progress-bar {
-                  height: 100%;
-                  width: 0%;
-                  background-color: #cb2a63;
-                  transition: width 0.3s ease;
-                }
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background-color: #cb2a63;
+      transition: width 0.3s ease;
+    }
 
-                .cancel-btn {
-                  background-color: #666;
-                  margin-right: 10px;
-                }
+    .cancel-btn {
+      background-color: #666;
+      margin-right: 10px;
+    }
 
-                .cancel-btn:hover {
-                  background-color: #555;
-                }
+    .cancel-btn:hover {
+      background-color: #555;
+    }
 
-                .button-group {
-                  display: flex;
-                  justify-content: flex-end;
-                }
+    .button-group {
+      display: flex;
+      justify-content: flex-end;
+    }
 
-                .section-header {
-                  display: flex;
-                  justify-content: space-between;
-                  align-items: center;
-                  margin-bottom: 15px;
-                }
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+    }
 
-                .section-header h3 {
-                  margin-bottom: 0;
-                }
+    .section-header h3 {
+      margin-bottom: 0;
+    }
 
-                .collapse-btn {
-                  background: none;
-                  border: none;
-                  color: var(--text-light);
-                  cursor: pointer;
-                  font-size: 1.2rem;
-                  box-shadow: none;
-                  margin: 0;
-                  padding: 5px;
-                }
+    .collapse-btn {
+      background: none;
+      border: none;
+      color: var(--text-light);
+      cursor: pointer;
+      font-size: 1.2rem;
+      box-shadow: none;
+      margin: 0;
+      padding: 5px;
+    }
 
-                body.light-mode .collapse-btn {
-                  color: var(--text-dark);
-                }
+    body.light-mode .collapse-btn {
+      color: var(--text-dark);
+    }
 
-                .section-content {
-                  max-height: 1000px;
-                  overflow: hidden;
-                  transition: max-height 0.3s ease;
-                }
+    .section-content {
+      max-height: 1000px;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+    }
 
-                .collapsed .section-content {
-                  max-height: 0;
-                }
+    .collapsed .section-content {
+      max-height: 0;
+    }
 
-                /* Fix for form version text in light mode */
-                body.light-mode .form-version {
-                  color: var(--text-dark);
-                }
-
-
-    </style>
+    body.light-mode .form-version {
+      color: var(--text-dark);
+    }
+  </style>
 </head>
 <body>
   <div class="toggle-container">
-    <div class="form-version">v1.3</div>
+    <div class="form-version">v2.0</div>
     <label for="themeToggle">🌙 Dark / ☀️ Light Mode
       <input type="checkbox" id="themeToggle">
     </label>
@@ -661,17 +654,31 @@
       document.body.classList.toggle("light-mode", toggle.checked);
     });
 
-    // Form validation and submission
+    // Form elements
     const form = document.getElementById('accessRequestForm');
     const successMessage = document.getElementById('successMessage');
     const progressBar = document.getElementById('formProgress');
-    const requiredFields = form.querySelectorAll('[required]');
     const submitBtn = document.getElementById('submitBtn');
     const cancelBtn = document.getElementById('cancelBtn');
-    
-    // Handle "Other" application selection
     const applicationSelect = document.getElementById('application');
     const otherAppField = document.getElementById('otherAppField');
+    const accessLevelSelect = document.getElementById('accessLevel');
+    const customAccessField = document.getElementById('customAccessField');
+    const permanentAccessCheckbox = document.getElementById('permanentAccess');
+    const endDateField = document.getElementById('endDate');
+    const accessJustificationField = document.getElementById('accessJustification');
+    const startDateInput = document.getElementById('startDate');
+    const endDateInput = document.getElementById('endDate');
+
+    // Initialize form with today's date
+    document.addEventListener('DOMContentLoaded', () => {
+      const today = new Date();
+      const formattedDate = today.toISOString().split('T')[0];
+      document.getElementById('startDate').min = formattedDate;
+      document.getElementById('acknowledgerDate').value = formattedDate;
+    });
+
+    // Handle "Other" application selection
     applicationSelect.addEventListener('change', () => {
       if (applicationSelect.value === 'Other') {
         otherAppField.classList.remove('hidden');
@@ -684,8 +691,6 @@
     });
 
     // Handle "Custom" access level selection
-    const accessLevelSelect = document.getElementById('accessLevel');
-    const customAccessField = document.getElementById('customAccessField');
     accessLevelSelect.addEventListener('change', () => {
       if (accessLevelSelect.value === 'Custom') {
         customAccessField.classList.remove('hidden');
@@ -698,10 +703,6 @@
     });
 
     // Handle permanent access checkbox
-    const permanentAccessCheckbox = document.getElementById('permanentAccess');
-    const endDateField = document.getElementById('endDate');
-    const accessJustificationField = document.getElementById('accessJustification');
-    
     permanentAccessCheckbox.addEventListener('change', () => {
       if (permanentAccessCheckbox.checked) {
         endDateField.disabled = true;
@@ -715,24 +716,13 @@
       updateFormProgress();
     });
 
-    // Set today's date as the minimum date for start date
-    const today = new Date();
-    const formattedDate = today.toISOString().split('T')[0];
-    document.getElementById('startDate').min = formattedDate;
-
     // Ensure end date is after start date
-    const startDateInput = document.getElementById('startDate');
-    const endDateInput = document.getElementById('endDate');
-    
     startDateInput.addEventListener('change', () => {
       endDateInput.min = startDateInput.value;
       if (endDateInput.value && new Date(endDateInput.value) < new Date(startDateInput.value)) {
         endDateInput.value = startDateInput.value;
       }
     });
-
-    // Pre-fill current date in the acknowledgement section
-    document.getElementById('acknowledgerDate').value = formattedDate;
 
     // Section collapse functionality
     const collapseBtns = document.querySelectorAll('.collapse-btn');
@@ -743,6 +733,16 @@
         section.classList.toggle('collapsed');
         btn.textContent = section.classList.contains('collapsed') ? '+' : '−';
       });
+    });
+
+    // Cancel button functionality
+    cancelBtn.addEventListener('click', () => {
+      if (confirm('Are you sure you want to cancel? All entered data will be lost.')) {
+        form.reset();
+        document.querySelectorAll('.error-message').forEach(el => el.classList.remove('visible'));
+        document.querySelectorAll('.error').forEach(el => el.classList.remove('error'));
+        progressBar.style.width = '0%';
+      }
     });
 
     // Update progress bar based on completed fields
@@ -780,7 +780,7 @@
     }
 
     // Validate form on input change
-    requiredFields.forEach(field => {
+    document.querySelectorAll('[required]').forEach(field => {
       field.addEventListener('input', () => {
         validateField(field);
         updateFormProgress();
@@ -823,211 +823,119 @@
       return isValid;
     }
 
-    // Replace your existing form submission event listener with this code
-// This goes at the end of your script section in your HTML file
-
-// Form submission handler - UPDATED VERSION
-form.addEventListener('submit', function(e) {
-  e.preventDefault();
-  
-  let isValid = validateForm();
-  
-  if (isValid) {
-    // Show loading state
-    submitBtn.disabled = true;
-    submitBtn.textContent = 'Submitting...';
-    
-    // Collect form data
-    const formData = new FormData(form);
-    const jsonData = {};
-    
-    for (let [key, value] of formData.entries()) {
-      jsonData[key] = value;
-    }
-    
-    // Add checkbox values that might not be in the FormData if unchecked
-    jsonData.policyAgreement = document.getElementById('policyAgreement').checked;
-    jsonData.permanentAccess = document.getElementById('permanentAccess').checked;
-    jsonData.termsAgreement = document.getElementById('termsAgreement').checked;
-    
-    // For testing without Google Script connection
-    // Remove this condition and use only the fetch code when your Google Script is ready
-    if (1) { // Change to "if (0)" when you're ready to use Google Sheets
-      console.log('Form data (test mode):', jsonData);
+    // Form validation function
+    function validateForm() {
+      let isValid = true;
       
-      // Simulate successful submission
-      setTimeout(() => {
-        // Hide form and show success message
-        form.style.display = 'none';
-        successMessage.style.display = 'block';
-      }, 1500);
-    } else {
-      // Send the data to Google Apps Script Web App
-      fetch('YOUR_GOOGLE_SCRIPT_URL_HERE', {
-        method: 'POST',
-        body: JSON.stringify(jsonData),
-        headers: {
-          'Content-Type': 'application/json'
+      // Validate all required fields
+      const requiredFields = form.querySelectorAll('[required]:not([disabled])');
+      requiredFields.forEach(field => {
+        if (!validateField(field)) {
+          isValid = false;
         }
-      })
-      .then(response => response.json())
-      .then(data => {
-        console.log('Success:', data);
-        
-        // Hide form and show success message
-        form.style.display = 'none';
-        successMessage.style.display = 'block';
-      })
-      .catch(error => {
-        console.error('Error:', error);
-        alert('There was an error submitting your form. Please try again later.');
-        
-        // Reset the submit button
-        submitBtn.disabled = false;
-        submitBtn.textContent = 'Submit Request';
       });
-    }
-  } else {
-    // Scroll to the first error
-    const firstError = document.querySelector('.error');
-    if (firstError) {
-      const section = firstError.closest('.section');
-      if (section.classList.contains('collapsed')) {
-        const sectionId = section.querySelector('.collapse-btn').getAttribute('data-section');
-        section.classList.remove('collapsed');
-        section.querySelector('.collapse-btn').textContent = '−';
-      }
-      firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      firstError.focus();
-    }
-  }
-});
-
-// Complete validateForm function 
-// This fixes the incomplete validateForm function in your original code
-function validateForm() {
-  let isValid = true;
-  
-  // Validate all required fields
-  const requiredFields = form.querySelectorAll('[required]:not([disabled])');
-  requiredFields.forEach(field => {
-    if (!validateField(field)) {
-      isValid = false;
-    }
-  });
-  
-  // Check date range
-  if (!permanentAccessCheckbox.checked && endDateInput.value && startDateInput.value) {
-    const startDate = new Date(startDateInput.value);
-    const endDate = new Date(endDateInput.value);
-    
-    if (endDate < startDate) {
-      endDateInput.classList.add('error');
-      document.getElementById('endDate-error').textContent = 'End date must be after start date';
-      document.getElementById('endDate-error').classList.add('visible');
-      isValid = false;
-    }
-    
-    // Check if long-term access justification is needed (> 90 days)
-    const daysDiff = Math.floor((endDate - startDate) / (1000 * 60 * 60 * 24));
-    if (daysDiff > 90 && !accessJustificationField.value.trim()) {
-      accessJustificationField.classList.add('error');
-      // Check if error message already exists
-      let errorElem = accessJustificationField.nextElementSibling;
-      if (!errorElem || !errorElem.classList.contains('error-message')) {
-        errorElem = document.createElement('div');
-        errorElem.className = 'error-message visible';
-        errorElem.textContent = 'Justification required for access longer than 90 days';
-        accessJustificationField.after(errorElem);
-      } else {
-        errorElem.classList.add('visible');
-      }
-      isValid = false;
-    }
-  }
-  
-  return isValid;
-}
-
-// Add this to your existing JavaScript at the end of your HTML file
-
-// Update your form submission handler to send data to Google Sheets
-form.addEventListener('submit', (e) => {
-  e.preventDefault();
-  
-  if (validateForm()) {
-    // Show loading state
-    submitBtn.disabled = true;
-    submitBtn.textContent = 'Submitting...';
-    
-    // Collect form data
-    const formData = new FormData(form);
-    const jsonData = {};
-    
-    for (let [key, value] of formData.entries()) {
-      // Convert checkbox values to boolean
-      if (value === 'on') {
-        jsonData[key] = true;
-      } else {
-        jsonData[key] = value;
-      }
-    }
-    
-    // Add checkbox values that might not be in the FormData if unchecked
-    jsonData.policyAgreement = document.getElementById('policyAgreement').checked;
-    jsonData.permanentAccess = document.getElementById('permanentAccess').checked;
-    jsonData.termsAgreement = document.getElementById('termsAgreement').checked;
-    
-    // Send the data to Google Apps Script Web App
-    fetch('https://script.google.com/macros/s/AKfycbx8zIq2hf_ZRPMUtIve0Gf_U1KqfO3QcpC8eU8R7SxKizfwJDfBY8bZzX6VO12k4Gy4/exec', {
-      method: 'POST',
-      body: JSON.stringify(jsonData),
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
-    .then(response => response.json())
-    .then(data => {
-      console.log('Success:', data);
       
-      // Hide form and show success message
-      form.style.display = 'none';
-      successMessage.style.display = 'block';
-    })
-    .catch(error => {
-      console.error('Error:', error);
-      alert('There was an error submitting your form. Please try again later.');
+      // Check date range
+      if (!permanentAccessCheckbox.checked && endDateInput.value && startDateInput.value) {
+        const startDate = new Date(startDateInput.value);
+        const endDate = new Date(endDateInput.value);
+        
+        if (endDate < startDate) {
+          endDateInput.classList.add('error');
+          document.getElementById('endDate-error').textContent = 'End date must be after start date';
+          document.getElementById('endDate-error').classList.add('visible');
+          isValid = false;
+        }
+        
+        // Check if long-term access justification is needed (> 90 days)
+        const daysDiff = Math.floor((endDate - startDate) / (1000 * 60 * 60 * 24));
+        if (daysDiff > 90 && !accessJustificationField.value.trim()) {
+          accessJustificationField.classList.add('error');
+          // Check if error message already exists
+          let errorElem = accessJustificationField.nextElementSibling;
+          if (!errorElem || !errorElem.classList.contains('error-message')) {
+            errorElem = document.createElement('div');
+            errorElem.className = 'error-message visible';
+            errorElem.textContent = 'Justification required for access longer than 90 days';
+            accessJustificationField.after(errorElem);
+          } else {
+            errorElem.classList.add('visible');
+          }
+          isValid = false;
+        }
+      }
       
-      // Reset the submit button
-      submitBtn.disabled = false;
-      submitBtn.textContent = 'Submit Request';
+      return isValid;
+    }
+
+    // Form submission handler
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      if (validateForm()) {
+        try {
+          // Show loading state
+          submitBtn.disabled = true;
+          submitBtn.textContent = 'Submitting...';
+          
+          // Collect form data
+          const formData = new FormData(form);
+          const jsonData = {};
+          
+          for (let [key, value] of formData.entries()) {
+            jsonData[key] = value;
+          }
+          
+          // Add checkbox values
+          jsonData.policyAgreement = document.getElementById('policyAgreement').checked;
+          jsonData.permanentAccess = document.getElementById('permanentAccess').checked;
+          jsonData.termsAgreement = document.getElementById('termsAgreement').checked;
+          
+          // Send the data to Google Apps Script Web App
+          const response = await fetch('https://script.google.com/macros/s/AKfycbxV3z-4wRPI7oiG7AjaEnf42WflWAOZJFpzYm5QQ8xSyNfPH1mGJoKei859r7O_DYl-bA/exec', {
+            method: 'POST',
+            mode: 'no-cors',
+            body: JSON.stringify(jsonData),
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          });
+          
+          // Handle response
+          const text = await response.text();
+          try {
+            const data = text ? JSON.parse(text) : {};
+            console.log('Success:', data);
+            form.style.display = 'none';
+            successMessage.style.display = 'block';
+          } catch (parseError) {
+            console.error('Error parsing response:', parseError);
+            // Even if we can't parse the response, consider it a success if we got this far
+            form.style.display = 'none';
+            successMessage.style.display = 'block';
+          }
+        } catch (error) {
+          console.error('Error:', error);
+          alert('There was an error submitting your form. Please try again later.');
+        } finally {
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Submit Request';
+        }
+      } else {
+        // Scroll to the first error
+        const firstError = document.querySelector('.error');
+        if (firstError) {
+          const section = firstError.closest('.section');
+          if (section.classList.contains('collapsed')) {
+            const sectionId = section.querySelector('.collapse-btn').getAttribute('data-section');
+            section.classList.remove('collapsed');
+            section.querySelector('.collapse-btn').textContent = '−';
+          }
+          firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          firstError.focus();
+        }
+      }
     });
-  } else {
-    // Scroll to the first error
-    const firstError = document.querySelector('.error');
-    if (firstError) {
-      const section = firstError.closest('.section');
-      if (section.classList.contains('collapsed')) {
-        const sectionId = section.querySelector('.collapse-btn').getAttribute('data-section');
-        section.classList.remove('collapsed');
-        section.querySelector('.collapse-btn').textContent = '−';
-      }
-      firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      firstError.focus();
-    }
-  }
-});
-
-
-
-
-
-
-
-
-
-
-
-        </script>
+  </script>
 </body>
 </html>
